@@ -1,0 +1,19 @@
+# 本地 streamlit secrets（含密码）
+.streamlit/
+
+# 不想公开的内部脚本（含账号密码的都在这些目录里）
+alerts/
+data_ingest/
+strategy/
+
+# 本地数据 / 图片 / 文档
+*.csv
+*.png
+*.docx
+~$*
+
+# Python 常规
+__pycache__/
+*.pyc
+.env
+.DS_Store
