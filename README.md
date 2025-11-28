@@ -96,8 +96,6 @@ tech10_trading/
 ├── strategy/        (ignored)
 └── .streamlit/      (ignored)
 
-
-
 All sensitive or internal scripts remain local and are excluded via `.gitignore`.
 
 ---
