@@ -25,11 +25,17 @@ Matplotlib
 It enables users to:
 
 ✔ Load historical Tech10 price data directly from Snowflake
+
 ✔ Select date windows (1M, 6M, YTD, 1Y, 5Y, All)
+
 ✔ Run MA / MACD / Buy & Hold strategies
+
 ✔ Visualize candlestick charts with buy/sell signals
+
 ✔ Compare strategy PnL vs benchmark
+
 ✔ View automatically generated strategy interpretation
+
 ✔ Use a clean, professional UI suitable for live interviews
 
 📊 Features
