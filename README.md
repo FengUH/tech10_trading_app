@@ -97,15 +97,3 @@ tech10_trading/
 └── .streamlit/      (ignored)
 
 All sensitive or internal scripts remain local and are excluded via `.gitignore`.
-
----
-
-## 🔧 Running Locally
-
-```bash
-pip install -r requirements.txt
-streamlit run app/app_streamlit.py
-
-Requires a valid .streamlit/secrets.toml file.
-
----
