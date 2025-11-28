@@ -1,6 +1,7 @@
 📈 Tech10 Trading Strategy Lab
 End-to-End Quant Research Demo • Snowflake + Streamlit + Python
 
+
 🔗 Live Demo
 
 👉 Click to open the live Streamlit app:
@@ -8,19 +9,13 @@ https://tech10tradingapp-xjdz5dzfyuorn9gdhxil96.streamlit.app/
 
 (Public link, no login required)
 
+
 🚀 Project Overview
 
 This project is a fully functional quantitative trading analytics laboratory, built end-to-end using:
 
-Snowflake
+Snowflake, Streamlit Cloud, Python, Pandas / NumPy, Matplotlib
 
-Streamlit Cloud
-
-Python
-
-Pandas / NumPy
-
-Matplotlib
 
 It enables users to:
 
