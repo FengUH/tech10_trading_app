@@ -32,9 +32,6 @@ It enables users to:
 ✔ View automatically generated strategy interpretation
 ✔ Use a clean, professional UI suitable for live interviews
 
-This demonstrates my ability to build:
-Ingestion → Storage → Strategy → Visualization → Deployment
-
 📊 Features
 1. Trading Strategies
 
@@ -84,9 +81,6 @@ Secrets are loaded from:
 
 .streamlit/secrets.toml      # local development
 Streamlit Cloud Secrets      # cloud deployment
-
-
-Ensuring complete security of Snowflake credentials.
 
 🏗 Project Structure
 tech10_trading/
