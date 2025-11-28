@@ -82,6 +82,7 @@ Only non-sensitive files are pushed to GitHub.
 
 ## 🏗 Project Structure
 
+```text
 tech10_trading/
 │
 ├── app/
