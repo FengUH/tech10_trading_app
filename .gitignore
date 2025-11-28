@@ -1,18 +1,19 @@
-# 本地 streamlit secrets（含密码）
+# Local Streamlit secrets (may contain passwords or API keys)
 .streamlit/
 
-# 不想公开的内部脚本（含账号密码的都在这些目录里）
+# Internal scripts that should not be exposed publicly
+# These folders may contain credentials, tokens, or private logic.
 alerts/
 data_ingest/
 strategy/
 
-# 本地数据 / 图片 / 文档
+# Local data, images, and documents that are not intended for version control
 *.csv
 *.png
 *.docx
 ~$*
 
-# Python 常规
+# Standard Python ignores
 __pycache__/
 *.pyc
 .env

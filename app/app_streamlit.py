@@ -14,6 +14,9 @@ import matplotlib.dates as mdates
 
 # ============================================================
 # 0. Page config & styling
+# ------------------------------------------------------------
+# Defines the high-level layout, page title, and a light visual
+# theme for both the sidebar and main content area.
 # ============================================================
 st.set_page_config(
     page_title="Tech10 Strategy Lab",
@@ -27,7 +30,7 @@ st.markdown(
     <style>
     /* Sidebar: light background + dark text */
     [data-testid="stSidebar"] {
-        background-color: #eef2ff;  /* 淡淡的蓝紫色 */
+        background-color: #eef2ff;  /* soft blue-purple accent */
         color: #111827;
     }
     [data-testid="stSidebar"] * {
@@ -53,11 +56,18 @@ st.markdown(
 )
 
 # ============================================================
-# 1. Snowflake config —— 读取自 Streamlit secrets 或环境变量
-#    （不要在代码里写死账号和密码）
+# 1. Snowflake config
+# ------------------------------------------------------------
+# Centralized configuration for Snowflake connectivity.
+# The app first looks for credentials in Streamlit secrets
+# (recommended for both local and cloud deployments). If not
+# found, it falls back to environment variables.
+#
+# Credentials should never be hard-coded directly in source
+# code in a real production environment.
 # ============================================================
 def get_snowflake_config():
-    # 优先从 Streamlit 的 secrets 里读取（本地和云端都支持）
+    # Prefer reading from Streamlit secrets (works both locally and in the cloud).
     if "SNOWFLAKE_ACCOUNT" in st.secrets:
         cfg = {
             "SNOWFLAKE_ACCOUNT":   st.secrets["SNOWFLAKE_ACCOUNT"],
@@ -70,7 +80,8 @@ def get_snowflake_config():
             "TABLE_NAME":          st.secrets.get("TABLE_NAME", "TECH10_DAILY_PRICES"),
         }
     else:
-        # 如果本地没有 secrets（比如只用环境变量调试），就从环境变量里读
+        # If Streamlit secrets are not available (e.g., local debugging only),
+        # use environment variables instead.
         cfg = {
             "SNOWFLAKE_ACCOUNT":   os.environ["SNOWFLAKE_ACCOUNT"],
             "SNOWFLAKE_USER":      os.environ["SNOWFLAKE_USER"],
@@ -97,6 +108,9 @@ TABLE_NAME          = _cfg["TABLE_NAME"]
 
 # ============================================================
 # 2. Load prices from Snowflake
+# ------------------------------------------------------------
+# Pulls the full Tech10 daily price history stored in Snowflake
+# and returns it as a pandas DataFrame, sorted by ticker and date.
 # ============================================================
 @st.cache_data
 def load_prices() -> pd.DataFrame:
@@ -131,7 +145,11 @@ def load_prices() -> pd.DataFrame:
 
 
 # ============================================================
-# 3. Strategy functions: MA, MACD, Buy&Hold
+# 3. Strategy functions: MA, MACD, Buy & Hold
+# ------------------------------------------------------------
+# Each function operates on a single ticker and returns an
+# enriched DataFrame that includes returns, signals, and
+# normalized equity curves for comparison.
 # ============================================================
 def apply_ma_strategy(df: pd.DataFrame, fast: int, slow: int) -> pd.DataFrame:
     """Simple moving-average crossover on a single ticker."""
@@ -170,7 +188,13 @@ def apply_macd_strategy(
 
 
 def apply_buyhold(df: pd.DataFrame) -> pd.DataFrame:
-    """Buy & hold benchmark for a single ticker."""
+    """
+    Buy & Hold benchmark for a single ticker.
+
+    Treats the position as fully invested for the entire period.
+    Used as a simple baseline to compare against rule-based
+    trading strategies.
+    """
     df = df.copy()
     df["RET"] = df["ADJ_CLOSE"].pct_change()
     df["EQ_BH"] = (1 + df["RET"]).cumprod()
@@ -181,8 +205,10 @@ def apply_buyhold(df: pd.DataFrame) -> pd.DataFrame:
 
 def generate_signal_summary(df_strat: pd.DataFrame, strategy: str, name: str) -> str:
     """
-    Short, product-style summary of the current position and what
-    the rule is doing in this window.
+    Generate a short, product-style narrative that explains:
+      - The time window being analyzed
+      - Whether the rule is currently in or out of the market
+      - How the rule conceptually behaves in this period
     """
     if df_strat.empty:
         return "There is not enough data in the selected window to generate trading suggestions."
@@ -228,6 +254,10 @@ def generate_signal_summary(df_strat: pd.DataFrame, strategy: str, name: str) ->
 
 # ============================================================
 # Helper: candlestick + signals
+# ------------------------------------------------------------
+# Renders a compact candlestick chart with overlaid buy/sell
+# markers to illustrate when the strategy turns in and out of
+# the market for the selected window.
 # ============================================================
 def plot_candlestick_with_signals(
     df_recent: pd.DataFrame,
@@ -343,6 +373,10 @@ def plot_candlestick_with_signals(
 
 # ============================================================
 # Helper: backtest figure & helpers
+# ------------------------------------------------------------
+# Builds a compact backtest panel showing price, indicators,
+# and strategy vs. Buy & Hold, then embeds it into a styled
+# Streamlit container.
 # ============================================================
 def build_backtest_figure(df_strat_window: pd.DataFrame,
                           strategy: str,
@@ -405,7 +439,10 @@ def build_backtest_figure(df_strat_window: pd.DataFrame,
 
 
 def render_backtest_box(fig_backtest):
-    """Show backtest figure inside a bordered card."""
+    """
+    Render the backtest figure inside a visually distinct card,
+    with a short description of what the panel is showing.
+    """
     st.markdown(
         """
         <div class="chart-box" style="margin-top: 0.6rem;">
@@ -423,7 +460,7 @@ def render_backtest_box(fig_backtest):
 def normalize_equity_in_window(df_window: pd.DataFrame) -> pd.DataFrame:
     """
     Normalize EQ_STRAT / EQ_BH to 1.0 at the start of the window
-    so the curves remain well-scaled even with NaNs.
+    so the curves remain well-scaled even in the presence of NaNs.
     """
     df_window = df_window.copy()
     for col in ["EQ_STRAT", "EQ_BH"]:
@@ -438,6 +475,12 @@ def normalize_equity_in_window(df_window: pd.DataFrame) -> pd.DataFrame:
 
 # ============================================================
 # 4. Streamlit UI  (single-ticker view)
+# ------------------------------------------------------------
+# End-to-end user interface:
+#   - select a ticker
+#   - choose a time window
+#   - pick a trading rule
+#   - review KPIs, price chart, and backtest behavior
 # ============================================================
 df_all = load_prices()
 tickers = sorted(df_all["TICKER"].unique())
@@ -484,6 +527,10 @@ date_range_label = st.sidebar.selectbox(
 
 
 def compute_start_date(label: str, last_date_: dt.date, first_date_: dt.date) -> dt.date:
+    """
+    Translate the selected window label (e.g. '6M') into a
+    concrete start date, clipped to the available history.
+    """
     if label == "1D":
         delta = dt.timedelta(days=1)
         start = last_date_ - delta
@@ -554,6 +601,9 @@ st.sidebar.caption("⚠️ For illustration only — not investment advice.")
 
 # ============================================================
 # 5. Single-ticker backtest on selected window
+# ------------------------------------------------------------
+# Applies the chosen strategy to the full history, then narrows
+# down to the user-selected window for visualization and KPIs.
 # ============================================================
 # Apply strategy on full history, then slice window
 if strategy == "MA Crossover":
@@ -577,7 +627,9 @@ if df_strat.empty:
 
 window_label = f"{start_date} → {end_date}"
 
-# ---- KPI metrics（用 st.metric，去掉原来的“胶囊框”） -----------------------
+# ---- KPI metrics (using st.metric instead of custom capsules) ----------------
+# High-level numeric summary of how the price and strategy
+# performed over the selected time window.
 if len(df_strat) >= 2:
     px_start = df_strat["ADJ_CLOSE"].iloc[0]
     px_end = df_strat["ADJ_CLOSE"].iloc[-1]
