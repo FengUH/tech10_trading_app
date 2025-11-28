@@ -98,7 +98,6 @@ tech10_trading/
 
 All sensitive or internal scripts remain local and are excluded via `.gitignore`.
 
----
 
 ## 🔧 Running Locally
 
