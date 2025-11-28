@@ -82,18 +82,20 @@ Only non-sensitive files are pushed to GitHub.
 
 ## 🏗 Project Structure
 
+```text
 tech10_trading/
 │
 ├── app/
-│ └── app_streamlit.py
+│   └── app_streamlit.py
 │
 ├── requirements.txt
 ├── .gitignore
 │
-├── alerts/ (ignored)
-├── data_ingest/ (ignored)
-├── strategy/ (ignored)
-└── .streamlit/ (ignored)
+├── alerts/          (ignored)
+├── data_ingest/     (ignored)
+├── strategy/        (ignored)
+└── .streamlit/      (ignored)
+
 
 
 All sensitive or internal scripts remain local and are excluded via `.gitignore`.
