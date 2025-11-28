@@ -1,8 +1,6 @@
 📈 Tech10 Trading Strategy Lab
 End-to-End Quant Research Demo • Snowflake + Streamlit + Python
 
-（中文版本在下方）
-
 🔗 Live Demo
 
 👉 Click to open the live Streamlit app:
