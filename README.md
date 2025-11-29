@@ -30,7 +30,6 @@ It enables users to:
 - ✔ Visualize **candlestick charts with Buy/Sell signals**  
 - ✔ Compare **strategy PnL vs benchmark**  
 - ✔ View **automatically generated strategy interpretation**  
-- ✔ Use a **clean, interview-ready professional UI**
 
 ---
 
