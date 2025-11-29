@@ -52,8 +52,6 @@ All strategies compute:
 ### **2. Candlestick Chart**
 - High-contrast professional candlestick styling  
 - Transparent green/red signal arrows  
-- Buy/Sell legend appears even when no trades occur  
-- Optimized for interview readability  
 
 ---
 
@@ -62,7 +60,6 @@ All strategies compute:
 - Date-range dropdown  
 - Strategy picker  
 - Toggle backtesting PnL  
-- Clean modern sidebar styling  
 
 ---
 
